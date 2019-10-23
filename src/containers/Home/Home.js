@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 landing:{
     color:'white',
     fontSize:'144px',
-    marginTop:'100px'
+    marginTop:'0'
 },
 background:{
     backgroundImage: (props) => `url(${props.url})`,
