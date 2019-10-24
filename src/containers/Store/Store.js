@@ -15,7 +15,7 @@ function Store(){
 
     const themes= useStyles();   
     storeList.forEach((elem)=>{
-        views.push(<ModalSell width="400px" height="300px" paint={elem.paint} name={elem.name} price={elem.price} /> );
+        views.push(<ModalSell width="400px" height="300px" paint={elem.paint} name={elem.name} price={elem.price} autor={elem.autor} /> );
     });
     
     const handleClick = (props) =>{
@@ -23,11 +23,13 @@ function Store(){
     }
     return(
         <div className={themes.background}>
-            <h1>Store</h1>
-            <button onClick={handleClick}>Atrás</button>
+            
+            <button className={themes.before} onClick={handleClick}>Atrás</button>
+            <h1>Tienda</h1>
+            <div className={themes.card}>
             {React.Children.map(views,(view) => {
                 return view;
-            })}
+            })}</div>
         </div>
     );
 }
@@ -36,10 +38,17 @@ const useStyles = makeStyles(themes =>({
         color:'black'
     },
     background:{
-        backgroundColor: '#000000',
+        backgroundColor: 'white',
   height: '100vh',
   width: '100%',
   display: 'flex'
+    },
+    card:{
+        height: '300px',
+        width:'200px'
+    },
+    before:{
+        height:'5%'
     }
 
 }))

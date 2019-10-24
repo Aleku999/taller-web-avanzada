@@ -6,9 +6,10 @@ function ModalSell(props){
      return (
          <Card width="400px" height="300px">
              <CardContent className={themes.container}>
-                 <img width="300px" height="300px" src={props.paint} />
+                 <img width="150px" height="150px" className={themes.imagen} src={props.paint} />
                 <h2 className={themes.title}>{props.name}</h2>
                  <h2><span className={themes.title}>$</span>{props.price} </h2>
+                 <p className={themes.small}>{props.autor} </p>
              </CardContent>
          </Card>
      );
@@ -18,6 +19,9 @@ function ModalSell(props){
      title: {
          color:'black'
      },
+     small:{
+         fontSize:'10px'
+     }
 
  }))
  export default ModalSell;

@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {PhotoshopPicker} from 'react-color';
+import {SketchPicker} from 'react-color';
 import p5 from 'p5';
 import { white } from 'ansi-colors';
-import { makeStyles, Modal } from '@material-ui/core';
+import { makeStyles, Modal,Card } from '@material-ui/core';
 import { Range } from 'react-range';
 import Backdrop from '@material-ui/core/Backdrop';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -12,7 +12,8 @@ import { useSpring, animated } from 'react-spring';
 
 function Paint(props) {
   const [color,setColor] = useState('#00000');
-  const [name,setName]=useState("Unknown");
+  const [name,setName]=useState("Desconocido");
+  const [autor, setAutor]=useState("Anonimo")
   const [price,setPrice]=useState(0);
   const [size, setSize]= React.useState('100');
   const [form, setForm] = useState("circle");
@@ -41,19 +42,22 @@ function Paint(props) {
   },[]);
   
   const handleChange =(color) => {
-    console.log(color);
+    var  rgba = `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${alpha})`;
     setColor(color.hex);
-    sketch.current.setColor(color.hex);
+    sketch.current.setColor(rgba);
     setPaleta(cont);
+    console.log(rgba);
+
   }
  
   const handleOpacity =(opacity) => {
-    setAlpha(opacity.alpha);
-    sketch.current.setAlpha(parseInt(opacity.target.value));
+    setAlpha(opacity.target.value);
+    sketch.current.setAlpha(opacity.target.value);
+    console.log(parseInt(opacity.target.value));
   }
   
   const handleSize =(event) => {
-    setSize(event.value);
+    setSize(event.target.value);
     sketch.current.setResize(parseInt(event.target.value));
   }
 
@@ -63,6 +67,10 @@ function Paint(props) {
   }
   const handleName = (event)=>{
     setName(event.target.value);
+
+  }
+  const handleAutor = (event)=>{
+    setAutor(event.target.value);
 
   }
 
@@ -91,12 +99,13 @@ function Paint(props) {
 
 const handleClose = (event) => {
   setImag( canvasParent.current.querySelector("canvas").toDataURL() );
-  
+  console.log(imag);
 
   var object={
     paint: imag,
     name:name,
-    price:price
+    price:price,
+    autor:autor
   }
   storeList.push(object);
   console.log(localStorage);
@@ -105,13 +114,20 @@ const handleClose = (event) => {
     
   
 };
+const handleOut = (event) => {
+  setImag( canvasParent.current.querySelector("canvas").toDataURL() );
+
+    setOpen(false);
+    
+  
+};
   
   return (
-    <div className="Paint">
+    <div className={theme.paint}>
     <header className={theme.background}>
     
-    <section className="Paint-right" id="canvas-parent">
-    {color}
+    <section className={theme.paintRight} id="canvas-parent">
+    
     <div ref={canvasParent}></div>
     <section>
    
@@ -120,28 +136,41 @@ const handleClose = (event) => {
   
         
     
-    <section className="Paint-left">
-    <PhotoshopPicker  color={color} triangle="hide" onChange={handleChange} />
-   <button onClick={handleCircle}>Circulo</button>
-   <button onClick={handleSquare}>Cuadrado</button>
-   <button onClick={handleTriangle}>Triangulo</button>
-    <h2 className={theme.text}>Tamaño</h2>
+    <section className={theme.paintLeft}>
+    <SketchPicker  color={color} triangle="hide" onChange={handleChange} />
+
+    <Card className={theme.card}>
+   <button onClick={handleCircle} className={theme.pincel}>Circulo</button>
+   <button onClick={handleSquare} className={theme.pincel}>Cuadrado</button>
+   <button onClick={handleTriangle} className={theme.pincel}>Triangulo</button>
+   <div className={theme.container}>
+   <h2 className={theme.text}>Tamaño</h2>
     <input type="range" min="10" max="100" onInput={handleSize} />
-    <h2 className={theme.text}>Opacidad</h2>
-    <input type="range" min="0" max="255" onInput={handleOpacity} />
-    <div>   
+   </div>
+   <div  className={theme.container}>
+   <h2 className={theme.text}>Opacidad</h2>
+
+
+    <input type="range" min="0" max="1" step="0.01" onInput={handleOpacity} />
+   </div>
+  
+    
+    <div  className={theme.container}>   
        <h2 className={theme.text}>Pintura usada:</h2>
     <h1 className="cuantityPaint" className={theme.text}> {cuantity} <span className={theme.text}>ml</span></h1>
+    </div>
+    <div  className={theme.container}>   
+    <h2 className={theme.text}>Numero de colores utilizados:</h2>
     <h2 className={theme.text}>{paleta}</h2>
     </div>
     <button onClick={handleOpen} className={theme.crear}>Crear</button>
-
+    </Card>
     </section>
     <Modal 
         aria-labelledby="spring-modal-title"
         className={classes.modal}
         open={open}
-        onClose={handleClose}
+        onClose={handleOut}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -168,7 +197,7 @@ const handleClose = (event) => {
         <input className="namePaint" onChange={handleName} placeholder="Nombre de obra" />
          <p className={theme.subtitle}> Ingresa el precio de tu pintura</p>
         <input className="pricePaint" onChange={handlePrice} placeholder="Precio de tu pintura" />
-        <p className={theme.subtitle}> Autor</p>
+        <p className={theme.subtitle}  onChange={handleAutor}> Autor</p>
         <input className="autorPaint" placeholder="Escribe tu nombre" />
         <p className={theme.subtitle}> Pintura usada </p>
         <p className={theme.subtitle}>{cuantity}<span>ml</span> </p>
@@ -185,27 +214,72 @@ const handleClose = (event) => {
   };
 
   const useStyles = makeStyles(theme => ({
+
+    paint:{
+      display:'flex',
+      
+    },
+    paintRight:{
+      width:'50%',
+      marginTop:'100px',
+      marginLeft:'200px'
+    },
+    
+    paintLeft:{
+      width:'50%',
+      marginLeft:'',
+      
+      marginTop:'100px',
+    },
+    
 background:{
-  backgroundColor: '#000000',
+  backgroundColor: 'white',
   height: '100vh',
   width: '100%',
   display: 'flex'
+},
+card:{
+  padding: '30px 30px',
+},
+container:{
+display:'flex'
 },
 imag:{
 height:'40vh',
 width:'300'
 },
 text:{
-  color:'white',
+  color:'gray',
+  fontSize:'15px'
 },
 crear:{
-  color:'white',
-borderRadius:'50px',
-width:'250px',
-height:'60px',
-fontSize:'20px',
-background:'none',
-border:'2px solid white'
+  display: 'inline-block',
+  padding: '8px 20px',
+  margin:'10px',
+  fontSize: '15px',
+  cursor: 'pointer',
+  textAlign: 'center',
+  textDecoration: 'none',
+  outline: 'none',
+  color:' grey',
+},
+
+pincel:{
+  display: 'inline-block',
+  padding: '8px 20px',
+  margin:'10px',
+  fontSize: '15px',
+  cursor: 'pointer',
+  textAlign: 'center',
+  textDecoration: 'none',
+  outline: 'none',
+  color:' grey',
+  
+  fontFamily: 'Merriweather, sans-serif',
+  backgroundColor: 'white',
+  border: 'none',
+  borderRadius: '15px',
+  boxShadow:' 0 3px #999',
 },
 
 content: {
@@ -213,6 +287,7 @@ content: {
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems:'center'
+
 },
 modal: {
     display: 'flex',
@@ -236,9 +311,11 @@ principalInfo:{
     flexDirection: 'column',
     marginRight: 50,
     
+ 
+    
 },
 subtitle:{
-    fontWeight: 'bold',
+    fontWeight: 'light',
     
 },
 
@@ -305,19 +382,19 @@ info: {
     app.mouseDragged = () => {
       console.log(form);
       if(form === "circle"){
-        app.fill(color); //intenté pasarle opacidad
+        app.fill(app.color(color) ); //intenté pasarle opacidad
         app.noStroke();
         app.ellipse(app.mouseX,app.mouseY,10+resize,10+ resize);
         console.log("pinta");
       }
       if(form === "triangle"){
-        app.fill(color); //intenté pasarle opacidad
+        app.fill(app.color(color) ); //intenté pasarle opacidad
         app.noStroke();
         app.triangle(app.mouseX,app.mouseY,app.mouseX+resize,app.mouseY+ resize*2 ,app.mouseX+resize*2, app.mouseY);
         console.log("pinta");
       }
       if(form === "square"){
-        app.fill(color); //intenté pasarle opacidad
+        app.fill(app.color(color) ); //intenté pasarle opacidad
         app.noStroke();
         app.rect(app.mouseX,app.mouseY,10+resize,10+ resize);
         console.log("pinta");
