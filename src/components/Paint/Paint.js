@@ -13,7 +13,7 @@ import { useSpring, animated } from 'react-spring';
 function Paint(props) {
   const [color,setColor] = useState('#00000');
   const [name,setName]=useState("Desconocido");
-  const [autor, setAutor]=useState("Anonimo")
+  const [autor, setAutor]=useState("Anonimo");
   const [price,setPrice]=useState(0);
   const [size, setSize]= React.useState('100');
   const [form, setForm] = useState("circle");
@@ -27,7 +27,7 @@ function Paint(props) {
   const canvasParent = React.useRef();
   const cont= 0;
   const [open, setOpen] = React.useState(false);
-
+console.log(autor);
   var storeList =[];
   var temp = localStorage.getItem("storeList");
 
@@ -35,7 +35,6 @@ function Paint(props) {
     storeList=JSON.parse(temp);
   }
 
-  console.log(canvasParent)
   
   React.useEffect(() =>{
     sketch.current = new p5(p5canvas(canvasParent.current, setCuantity));
@@ -46,14 +45,12 @@ function Paint(props) {
     setColor(color.hex);
     sketch.current.setColor(rgba);
     setPaleta(cont);
-    console.log(rgba);
 
   }
  
   const handleOpacity =(opacity) => {
     setAlpha(opacity.target.value);
     sketch.current.setAlpha(opacity.target.value);
-    console.log(parseInt(opacity.target.value));
   }
   
   const handleSize =(event) => {
@@ -71,6 +68,7 @@ function Paint(props) {
   }
   const handleAutor = (event)=>{
     setAutor(event.target.value);
+    console.log(autor);
 
   }
 
@@ -80,17 +78,14 @@ function Paint(props) {
     sketch.current.setForm("circle");
    
     
-    console.log(form);
   }
   const handleSquare= (form) =>{
     form = "square"
     sketch.current.setForm("square");
-    console.log(form);
   }
   const handleTriangle= (form) =>{
     form = "triangle"
     sketch.current.setForm("triangle");
-    console.log(form);
   }
 
   const handleOpen = () => {
@@ -99,7 +94,6 @@ function Paint(props) {
 
 const handleClose = (event) => {
   setImag( canvasParent.current.querySelector("canvas").toDataURL() );
-  console.log(imag);
 
   var object={
     paint: imag,
@@ -108,7 +102,6 @@ const handleClose = (event) => {
     autor:autor
   }
   storeList.push(object);
-  console.log(localStorage);
   localStorage.setItem("storeList",JSON.stringify(storeList));
     setOpen(false);
     
@@ -197,8 +190,8 @@ const handleOut = (event) => {
         <input className="namePaint" onChange={handleName} placeholder="Nombre de obra" />
          <p className={theme.subtitle}> Ingresa el precio de tu pintura</p>
         <input className="pricePaint" onChange={handlePrice} placeholder="Precio de tu pintura" />
-        <p className={theme.subtitle}  onChange={handleAutor}> Autor</p>
-        <input className="autorPaint" placeholder="Escribe tu nombre" />
+        <p className={theme.subtitle} > Autor</p>
+        <input className="autorPaint"  onChange={handleAutor} placeholder="Escribe tu nombre" />
         <p className={theme.subtitle}> Pintura usada </p>
         <p className={theme.subtitle}>{cuantity}<span>ml</span> </p>
         <button onClick={handleClose}>Subir a la Tienda</button>
@@ -240,6 +233,7 @@ background:{
 },
 card:{
   padding: '30px 30px',
+  width:'400px'
 },
 container:{
 display:'flex'
@@ -368,7 +362,6 @@ info: {
       var canvas = app.createCanvas(700,700);
       canvas.parent(domElement);
       app.noLoop();
-      console.log(canvas.canvas);
    
       //setImag(canvas.canvas.toDataURL())
     }
@@ -380,27 +373,22 @@ info: {
       }
     }
     app.mouseDragged = () => {
-      console.log(form);
       if(form === "circle"){
         app.fill(app.color(color) ); //intenté pasarle opacidad
         app.noStroke();
         app.ellipse(app.mouseX,app.mouseY,10+resize,10+ resize);
-        console.log("pinta");
       }
       if(form === "triangle"){
         app.fill(app.color(color) ); //intenté pasarle opacidad
         app.noStroke();
         app.triangle(app.mouseX,app.mouseY,app.mouseX+resize,app.mouseY+ resize*2 ,app.mouseX+resize*2, app.mouseY);
-        console.log("pinta");
       }
       if(form === "square"){
         app.fill(app.color(color) ); //intenté pasarle opacidad
         app.noStroke();
         app.rect(app.mouseX,app.mouseY,10+resize,10+ resize);
-        console.log("pinta");
       }
       cuantity++;
-      console.log(cuantity);
       setCuantity(cuantity);
       
     }

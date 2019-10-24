@@ -23,33 +23,44 @@ function Store(){
     }
     return(
         <div className={themes.background}>
-            
+            <div>
             <button className={themes.before} onClick={handleClick}>Atrás</button>
-            <h1>Tienda</h1>
+            <h1 className={themes.title} >Nuestra Tienda</h1>
+            </div>
+            <div className={themes.tienda} >
+                
             <div className={themes.card}>
             {React.Children.map(views,(view) => {
                 return view;
             })}</div>
+            </div>
         </div>
     );
 }
 const useStyles = makeStyles(themes =>({
     title: {
-        color:'black'
+        color:'grey',
+        fontSize:'50px'
     },
     background:{
         backgroundColor: 'white',
   height: '100vh',
   width: '100%',
-  display: 'flex'
+  display: 'flex',
+  flexDirection:'column'
     },
     card:{
         height: '300px',
-        width:'200px'
+        marginTop:'10px',
+        marginLeft:'10px',
+        width:'100vw',
+        display: 'flex',
+        flexWrap:'wrap'
     },
     before:{
         height:'5%'
-    }
+    },
+   
 
 }))
 
