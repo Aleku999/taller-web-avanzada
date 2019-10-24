@@ -11,12 +11,15 @@ function Home(props) {
   function handleClick(){
     props.history.push('/create');
   }
+  function handleStore(){
+    props.history.push('/store');
+  }
 
   return (
     <div className={themes.background}>
       <h1 className={themes.landing}> Paint your <br/> imagination </h1>
       <button className={themes.button1} onClick={handleClick} >Create and sell</button>
-      <button className={themes.button2}>Store</button>
+      <button className={themes.button2} onClick={handleStore}>Store</button>
     </div>
   );
 }
