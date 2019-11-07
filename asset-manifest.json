@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/taller-web/static/css/main.62f53ecf.chunk.css",
+    "main.js": "/taller-web/static/js/main.8e6dee7e.chunk.js",
+    "main.js.map": "/taller-web/static/js/main.8e6dee7e.chunk.js.map",
+    "runtime-main.js": "/taller-web/static/js/runtime-main.92d4c796.js",
+    "runtime-main.js.map": "/taller-web/static/js/runtime-main.92d4c796.js.map",
+    "static/js/2.33ecbda3.chunk.js": "/taller-web/static/js/2.33ecbda3.chunk.js",
+    "static/js/2.33ecbda3.chunk.js.map": "/taller-web/static/js/2.33ecbda3.chunk.js.map",
+    "index.html": "/taller-web/index.html",
+    "precache-manifest.4aa1c63895d1eb926957f6ba24913e0a.js": "/taller-web/precache-manifest.4aa1c63895d1eb926957f6ba24913e0a.js",
+    "service-worker.js": "/taller-web/service-worker.js",
+    "static/css/main.62f53ecf.chunk.css.map": "/taller-web/static/css/main.62f53ecf.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.92d4c796.js",
+    "static/js/2.33ecbda3.chunk.js",
+    "static/css/main.62f53ecf.chunk.css",
+    "static/js/main.8e6dee7e.chunk.js"
+  ]
+}
